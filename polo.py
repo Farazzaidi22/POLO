@@ -5,8 +5,9 @@ import Error
 
 DIGITS = '0123456789'
 ALPHABETS ='ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz'
+SPECIALCHARACTERS ='!@#$%^&|~`+-*/'
 
-KeyWord = ['int', 'float', 'string', 'char', 'bool', 'var', 'if', 'else', 'for', 'while', 'class', 'public', 'private', 
+KeyWord = ['int', 'float', 'string', 'bool', 'var', 'if', 'else', 'for', 'while', 'class', 'public', 'private', 
             'protected', 'virtual', 'override', 'static', 'enum', 'return', 'break', 'continue','new', 'meth']
 
 def Search_For_KeyWord(n):
@@ -18,6 +19,9 @@ def Search_For_KeyWord(n):
 ###################
 # TOKEN
 ###################
+
+TT_ERROR = 'Error'
+
 
 TT_KW       = 'KeyWord'
 TT_ID       = 'Variable'
@@ -58,8 +62,8 @@ TT_RPARENC   = 'RPARENCurly'
 
 class Token:
     def __init__(self, type_, value=None):
-        self.type = type_
-        self.value = value
+        self.type   = type_
+        self.value  = value
 
 #to return value and type of the input
     # def __reprint__(self):
@@ -78,6 +82,7 @@ class Lexer:
     def __init__(self, text):
         self.text = text
         self.pos = -1
+        self.ln = 1
         self.current_char = None
         self.advance()
 
@@ -86,6 +91,12 @@ class Lexer:
         self.pos += 1
         self.current_char = self.text[self.pos] if(self.pos < len(self.text)) else None
         
+        
+    def lineno(self,current_char):
+        if(current_char == '\n'):
+            self.ln += 1
+        return self
+
     def make_Number(self):
         num_string = '' #to save our digits
         dot_count  = 0   #To keep track of decimal
@@ -109,7 +120,7 @@ class Lexer:
     def make_variable(self):
         var_str = ''
 
-        while self.current_char != None and self.current_char in ALPHABETS:
+        while self.current_char != None and self.current_char in ALPHABETS + DIGITS:
             var_str += self.current_char
             self.advance()
         
@@ -123,15 +134,17 @@ class Lexer:
         str_str = ''
         quot_count = 0
 
-        while self.current_char != None and self.current_char in ALPHABETS + '\"':
+        while self.current_char != None and self.current_char in ALPHABETS + '\"' + ' \t'+ DIGITS + SPECIALCHARACTERS:
             if self.current_char == '\"':
-                if quot_count == 1: break
-                quot_count += 1
+                if quot_count == 0: 
+                    quot_count += 1
+                    self.advance()
+                    if quot_count == 1:
+                        return Token(TT_STRING, str_str)
+
             else:
                 str_str += self.current_char
             self.advance()
-                
-        return Token(TT_STRING, str_str)
 
 
     def make_tokens(self):
@@ -146,12 +159,15 @@ class Lexer:
     #For Numbers
             elif(self.current_char in DIGITS):
                 tokens.append(self.make_Number())
+                
     
     #For keywords and variables
             elif(self.current_char in ALPHABETS):
                 tokens.append(self.make_variable())
+                
     #For strings
-            elif self.current_char == '\"' :
+            elif self.current_char == '\"':
+                self.advance()
                 tokens.append(self.make_String())
             
     #For Arithematic Operators and Asssignment Operators
@@ -273,6 +289,8 @@ class Lexer:
                 self.advance()
                 return [], Error.IllegalCharError("'" + char + "'")
 
+        x = self.lineno(self.current_char)
+        print("line no is: ", x.ln)
         return tokens, None
 
 #######################################

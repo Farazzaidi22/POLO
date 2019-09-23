@@ -105,6 +105,7 @@ class Lexer:
     def advance(self):
         self.pos.advance(self.current_char)
         self.current_char = self.text[self.pos.idx] if self.pos.idx < len(self.text) else None
+        
 
     def make_tokens(self):
         tokens = []
@@ -113,7 +114,7 @@ class Lexer:
             if self.current_char in ' \t':
                 self.advance()
             elif self.current_char in DIGITS:
-                tokens.append(self.make_number())                    
+                tokens.append(self.make_number())
             elif self.current_char in ALPHABETS:
                 tokens.append(self.make_variable())
             elif self.current_char == '+':
@@ -136,6 +137,7 @@ class Lexer:
                 self.advance()
             elif self.current_char == '\"' :
                 #temp = self.current_char
+                self.advance()
                 tokens.append(self.mujji())
 
             else:
@@ -151,16 +153,25 @@ class Lexer:
         num_str = ''
         quot_count = 0
 
-        while self.current_char != None and self.current_char in ALPHABETS + '\"':
+        while self.current_char != None and self.current_char in ALPHABETS + '\"' + ' \t' + DIGITS:
+            
             if self.current_char == '\"':
-                if quot_count == 1: break
-                quot_count += 1
-                #num_str += '\"'
+                if quot_count == 0: 
+                    quot_count += 1
+                    self.advance()
+                    if quot_count == 1:
+                        return Token(TT_STRING, num_str)
             else:
                 num_str += self.current_char
             self.advance()
-                
-        return Token(TT_STRING, num_str)
+        
+        
+        
+        # if quot_count ==1:
+        #     return Token(TT_STRING, num_str)
+        # else:
+            
+        #     print("error, \" is missing")
 
     def make_number(self):
         num_str = ''
@@ -174,18 +185,23 @@ class Lexer:
             else:
                 num_str += self.current_char
             self.advance()
-
-        if dot_count == 0:
-            return Token(TT_INT, int(num_str))
-        else:
-            return Token(TT_FLOAT, float(num_str))
+            if (self.current_char in ALPHABETS):
+                pos_start = self.pos.copy()
+                char = self.current_char
+                self.advance()
+                return [], IllegalCharError(pos_start, self.pos, "'" + char + "'")
+            else:
+                if dot_count == 0:
+                    return Token(TT_INT, int(num_str))
+                else:
+                    return Token(TT_FLOAT, float(num_str))
 
 
     def make_variable(self):
         var_str = ''
         #dot_count = 0
 
-        while self.current_char != None and self.current_char in ALPHABETS:
+        while self.current_char != None and self.current_char in ALPHABETS + DIGITS:
             var_str += self.current_char
             self.advance()
         
