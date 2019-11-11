@@ -1,0 +1,16 @@
+<OE> : <AE> <OE'>
+<OE'> : (OR <AE> <OE'>)*
+
+<AE> : <RE> <AE'>
+<AE'> : (AND <RE> <AE'>)*
+
+<RE> : <E> <RE'>
+<RE'> : (ROP <E> <RE'>)*
+
+<E> : <T> <E'>
+<E'> : ((PLUS|MIN) <T> <E'>)*
+
+<T> : <F> <T'>
+<T'> : ((MUL|DIV|MOD) <F> <T'>)*
+
+<F> : <IDENTITY> | <CONST> | <FUNC_CALL> | (<OE>) | NOT<F> | TRUE | FALSE
