@@ -46,12 +46,68 @@ class Parser:
         return self.current_tok
 
     def parse(self):
-        res = self.Dec()
+        res = self.Definition()
         # if self.current_tok.type != polo.TT_ENDMARKER:
         #     return False
 
         return res
     
+    # def Start(self):
+    #     if(self.current_tok.type == polo.TT_DT or self.current_tok.type == polo.TT_ID or 
+    #     self.current_tok.type == polo.TT_ACESSORMOD or self.current_tok.type == polo.TT_CLASS or
+    #     self.current_tok.type == polo.TT_METH):
+    #         if(self.Definition()):
+    #             if(self.current_tok.type == polo.TT_METH):
+    #                 self.advanceForPar()
+    #                 if(self.current_tok.type == polo.TT_MAIN):
+    #                     self.advanceForPar()
+    #                     if(self.current_tok.type == polo.TT_LPARENR):
+    #                         self.advanceForPar()
+    #                         if(self.current_tok.type == polo.TT_RPARENR):
+    #                             self.advanceForPar()
+    #                             if(self.current_tok.type == polo.TT_LPARENC):
+    #                                 self.advanceForPar()
+    #                                 if(self.MST()):
+    #                                     if(self.current_tok.type == polo.TT_RPARENC):
+    #                                         self.advanceForPar()
+    #                                         return True
+    #                                     else:
+    #                                         return False
+    #                                 else:
+    #                                     return False
+    #                             else:
+    #                                 return False
+    #                         else:
+    #                             return False
+    #                     else:
+    #                         return False
+    #                 else:
+    #                     return False
+    #             else:
+    #                 return False
+    #         else:
+    #             return False
+    #     else:
+    #         return False
+    
+
+    def Definition(self):
+        if(self.current_tok.type == polo.TT_DT or self.current_tok.type == polo.TT_ID or 
+        self.current_tok.type == polo.TT_ACESSORMOD or self.current_tok.type == polo.TT_CLASS or
+        self.current_tok.type == polo.TT_METH or self.current_tok.type == polo.TT_ENDMARKER):
+            
+            if(self.Dec() or self.func_dec() or self.ClassDec()):
+                if(self.Definition()):
+                    return True
+                else:
+                    return False
+            elif(self.current_tok.type == polo.TT_ENDMARKER):
+                return True
+            else:
+                return False
+        else:
+            return False
+
     def listt(self):
         if(self.current_tok.type == polo.TT_TERMINATOR):
             self.advanceForPar()
@@ -66,7 +122,8 @@ class Parser:
         self.current_tok.type == polo.TT_MINUS or self.current_tok.type == polo.TT_RELATIONALOP or 
         self.current_tok.type == polo.TT_LOGICALOP or self.current_tok.type == polo.TT_SEPARATOR or 
         self.current_tok.type == polo.TT_TERMINATOR or self.current_tok.type == polo.TT_ACESSOR or 
-        self.current_tok.type == polo.TT_RPARENR or self.current_tok.type == polo.TT_RPARENS):
+        self.current_tok.type == polo.TT_RPARENR or self.current_tok.type == polo.TT_LPARENR 
+        or self.current_tok.type == polo.TT_RPARENS):
         
             if(self.current_tok.type == polo.TT_LPARENS):
                 self.advanceForPar()
@@ -129,6 +186,7 @@ class Parser:
                                 self.advanceForPar()
                                 if(self.ClassBody()):
                                     if(self.current_tok.type == polo.TT_RPARENC):
+                                        self.advanceForPar()
                                         return True
                                     else:
                                         return False
@@ -180,10 +238,16 @@ class Parser:
         if(self.current_tok.type == polo.TT_METH or self.current_tok.type == polo.TT_ACESSORMOD or 
         self.current_tok.type == polo.TT_DT or self.current_tok.type == polo.TT_ID or self.current_tok.type == polo.TT_RPARENC):
             if(self.func_dec()):
-                return True
+                if(self.ClassBody()):
+                    return True
+                else:
+                    return False
             elif(self.AM()):
                 if(self.Dec()):
-                    return True
+                    if(self.ClassBody()):
+                        return True
+                    else:
+                        return False
                 else:
                     return False
             # else:
@@ -208,6 +272,7 @@ class Parser:
                                     self.advanceForPar()
                                     if(self.MST()):
                                         if(self.current_tok.type == polo.TT_RPARENC):
+                                            self.advanceForPar()
                                             return True
                                     else:
                                         return False
@@ -245,7 +310,10 @@ class Parser:
             if(self.current_tok.type == polo.TT_SEPARATOR):
                 self.advanceForPar()
                 if(self.Dec_Args()):
-                    return True
+                    if(self.MDec_Args()):
+                        return True
+                    else:
+                        return False
                 else:
                     return False
                 # if(self.DTorID()):
@@ -292,7 +360,7 @@ class Parser:
         self.current_tok.type == polo.TT_NOT or self.current_tok.type == polo.TT_BOOL or self.current_tok.type == polo.TT_RPARENR):
             
             if(self.Identity() or self.OE() or self.current_tok.type in polo.TT_INT):
-                if(self.MC_Args()):
+                if(self.MCall_Args()):
                     return True
             # else:
             #     return False
@@ -320,7 +388,10 @@ class Parser:
             if(self.current_tok.type == polo.TT_ACESSOR):
                 self.advanceForPar()
                 if(self.Identity()):
-                    return True
+                    if(self.Chain_Call()):
+                        return True
+                    else:
+                        return False
                 else:
                     return False
             # else:
@@ -744,6 +815,7 @@ class Parser:
                     self.advanceForPar()
                     if(self.MST()):
                         if(self.current_tok.type == polo.TT_RPARENC):
+                            self.advanceForPar()
                             return True
                         else:
                             return False
@@ -845,13 +917,14 @@ class Parser:
         else:
             return False
     
+    #SSt phat rha ha
     def SST(self):
         if(self.current_tok.type == polo.TT_DT or self.current_tok.type == polo.TT_ID or self.current_tok.type == polo.TT_WHILE or
         self.current_tok.type == polo.TT_FOR or self.current_tok.type == polo.TT_IF or self.current_tok.type == polo.TT_RET or
         self.current_tok.type == polo.TT_BREAK):
-            if(self.Dec()):
+            if(self.func_call()):
                 return True
-            elif(self.Assign_St()):
+            elif(self.Dec()):
                 return True
             elif(self.While_st()):
                 return True
@@ -859,7 +932,7 @@ class Parser:
                 return True
             elif(self.If_st()):
                 return True
-            elif(self.func_call()):
+            elif(self.Assign_St() ):
                 return True
             elif(self.return_st()):
                 return True

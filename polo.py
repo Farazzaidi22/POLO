@@ -34,6 +34,7 @@ puntuators          = [';', ',', '\n', ':', '[', ']', '{', '}', '(', ')', '.']
 TT_CLASS                 = 'Class'
 TT_ENDMARKER             = 'EndMarker'
 TT_METH                  = 'Meth'
+# TT_MAIN                  = 'main'
 TT_NEW                   = 'new'
 TT_RET                   = 'return' 
 TT_BREAK                 = 'break'
@@ -182,6 +183,9 @@ class Lexer:
         elif(var_str == 'meth'):
             return Token(TT_METH, var_str)
         
+        # elif(var_str == 'main'):
+        #     return Token(TT_MAIN, var_str)
+        
         elif(var_str == 'new'):
             return Token(TT_NEW, var_str)
         
@@ -283,7 +287,7 @@ class Lexer:
     
     #For change of line
             elif(self.current_char in "\n"):
-                tokens.append(Token(TT_TERMINATOR))
+                # tokens.append(Token(TT_TERMINATOR))
                 self.advance()
     
     #For terminal
@@ -461,7 +465,7 @@ class Lexer:
                 self.advance()
                 return [], Error.IllegalCharError(posi_start, self.pos ,"'" + char + "'")
         
-        # tokens.append(Token(TT_ENDMARKER,  pos_start = self.pos))
+        tokens.append(Token(TT_ENDMARKER,  pos_start = self.pos))
         return tokens, None
 
 #######################################
