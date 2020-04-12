@@ -115,16 +115,16 @@ class Lexer:
 								self.advance()
 						elif self.current_char in DIGITS:
 								tokens.append(self.make_number())
-						elif self.current_char == '+':
+						elif self.current_char == 'PLUS':
 								tokens.append(Token(TT_PLUS, pos_start=self.pos))
 								self.advance()
-						elif self.current_char == '-':
+						elif self.current_char == 'MINUS':
 								tokens.append(Token(TT_MINUS, pos_start=self.pos))
 								self.advance()
-						elif self.current_char == '*':
+						elif self.current_char == 'MUL':
 								tokens.append(Token(TT_MUL, pos_start=self.pos))
 								self.advance()
-						elif self.current_char == '/':
+						elif self.current_char == 'DIV':
 								tokens.append(Token(TT_DIV, pos_start=self.pos))
 								self.advance()
 						elif self.current_char == '(':
@@ -234,7 +234,7 @@ class Parser:
 		if not res.error and self.current_tok.type.type != TT_EOF:
 			return res.failure(InvalidSyntaxError(
 				self.current_tok.type.pos_start, self.current_tok.type.pos_end,
-				"Expected '+', '-', '*' or '/'"
+				"Expected 'PLUS', 'MINUS', 'MUL' or 'DIV'"
 			))
 		return res
 

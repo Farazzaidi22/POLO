@@ -1,0 +1,49 @@
+name: POLO
+extension: .pl
+language type: Imperative and compiled
+
+Features:
+	-A variable may be declared without any value.
+	the language will be scoped like most of the language i.e code will be written under a pair of {} boundries.
+	-A line can terminated by putting ";" at the end or by pressing "Enter key"
+	-Function will be declared using ‘meth’ keyword. Function bodies will be written under "{}" boundrary.
+	-Function may or may not have a return type and by default it'll be void.
+
+primitive data type:
+	-Data types will be int, float, double, char, string will be a separate data type in a different class.
+	-The language will have ‘var’ keyword for undefined data types (only with variables).
+
+OOP CONCEPTS:
+	-‘class’ keyword for class initialization.
+	-Constructor will have a same name as  class name.
+	-‘this’ keyword in class’ scope.
+	-‘public’, ‘private’, ‘protected’, ‘virtual’, ‘override’ keywords will 
+	  have the same meaning as they have in another languages.
+	-Inheritance is done like it is done in C# For example: child:parent.
+	-A virtual function can be written which will be declared within a base 
+	 class and is re-defined(Overriden) by a derived class. 
+	 For example(in parent class): public virtual void update()
+	 For example(in child class): public override void update()
+
+
+Key words:
+	Data Types: int, float, bool, char, string
+	loops: for, while
+	conditional: if-else
+	definition of Class: Class
+	Acess modifiers: Public, private, protected
+	type modifiers: virtual, override
+
+Punctuators: 
+	separator:- ,
+	line terminator:- ; and "Enter key"
+	inheritant initiator:- :
+	Scope:- {}
+	preference identifier: ()
+	Accessor: .
+
+Operators:
+	mathematical:- +,-,*,/,% (Associativity : Left to right)
+	logical:- AND, OR, NOT (Associativity : Left to right)
+	Relational Operators:- ==, !=, >, <, >=, <= (Associativity : Left to right)
+	Assignment Operators:- =, +=, -=, *=, /=, %= (Associativity : Right to left) 	

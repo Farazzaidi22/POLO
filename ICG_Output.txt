@@ -1,0 +1,9 @@
+L0_start: 
+if (T0 == false) jmp L0_finish 
+L1_start: 
+if (T1 == false) jmp L1_finish 
+L2_start: 
+if (T2 == false) jmp L2_finish 
+L2_finish: 
+L1_finish: 
+L0_finish: 

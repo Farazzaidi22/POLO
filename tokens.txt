@@ -64,14 +64,14 @@ TT_ASSIGNMENTOP        = 'AssignmentOperator'
 # TT_ModEquals         = 'ModEquals'
 
 
-TT_RELATIONALOP     = 'RelationalOperator'
+TT_RELATIONALOP       = 'RelationalOperator'
 # TT_GreaterThan      = 'Greater'
 # TT_LessThan         = 'Lesser'
 # TT_GreaterEqual     = 'GreaterThanEqualTo'
 # TT_LesserEqual      = 'LesserThanEqualTo'
 # TT_DoubleEquals     = 'DoubleEquals'
 # TT_NotEquals        = 'NotEqualsTo'
-TT_NOT              = 'NOT'
+TT_NOT                = 'NOT'
 
 TT_LPARENR   = 'LPARENRound'
 TT_RPARENR   = 'RPARENRound'

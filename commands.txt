@@ -1,20 +1,10 @@
-public class A:B
-{   
-    meth faraz()
-    {
-        if(a > c)
-        {
-
-        }
-        else
-        {
-
-        }
-        for i in range(a,c)
-        {
-            int m,n;
-            a=b;
-            int v,d;
+meth func(){
+    int a;
+    if(a){
+        for a in range(a){
+            while(a){
+                
+            }
         }
     }
 }

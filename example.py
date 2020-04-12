@@ -4,7 +4,7 @@ class BasicLexer(Lexer):
     tokens = { NAME, STRING,INT, IF, THEN, ELSE, FOR, FUN, TO, ARROW, EQEQ }
     ignore = '\t '
 
-    literals = { '=', '+', '-', '/', '*', '(', ')', ',', ';' }
+    literals = { 'AssignmentOperator', 'PLUS', 'MINUS', 'DIV', 'MUL', '(', ')', ',', ';' }
 
     # Define tokens
     INT = r'int' 

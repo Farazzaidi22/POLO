@@ -162,19 +162,19 @@ class Lexer:
                 tokens.append(self.make_both())
             # elif self.current_char in ALPHABETS:
             #     tokens.append(self.make_variable())
-            elif self.current_char == '+':
+            elif self.current_char == 'PLUS':
                 tokens.append(Token(TT_PLUS))
                 self.advance()
                 # self.back()
                 # print(self.current_char)
                 # break
-            elif self.current_char == '-':
+            elif self.current_char == 'MINUS':
                 tokens.append(Token(TT_MINUS))
                 self.advance()
-            elif self.current_char == '*':
+            elif self.current_char == 'MUL':
                 tokens.append(Token(TT_MUL))
                 self.advance()
-            elif self.current_char == '/':
+            elif self.current_char == 'DIV':
                 tokens.append(Token(TT_DIV))
                 self.advance()
             elif self.current_char == '(':

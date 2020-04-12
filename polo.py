@@ -1,7 +1,7 @@
 import Error
 import Position
-import Parser
-import strings_with_arrows
+import Semantic
+# import strings_with_arrows
 
 #######################################
 # CONSTANTS
@@ -392,7 +392,7 @@ class Lexer:
                     self.advance()
                 else:
                     # self.current_char = temp
-                    tokens.append(Token(TT_ASSIGNMENTOP))
+                    tokens.append(Token(TT_ASSIGNMENTOP, "="))
                     # self.advance()
 
             elif(self.current_char == ">"):
@@ -477,13 +477,14 @@ def run(text):
     lexer = Lexer(text)
     tokens, error = lexer.make_tokens()
     if error: return None, error
+    # return tokens, error
 
     #for parser
-    par = Parser.Parser(tokens)
-    ast = par.parse()
+    # par = Parser.Parser(tokens)
+    # ast = par.parse()
+    # return ast, None
 
+    #for semantic
+    sem = Semantic.Parser(tokens)
+    ast = sem.parse()
     return ast, None
-
-            
-
-
